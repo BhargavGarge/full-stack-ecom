@@ -31,9 +31,8 @@ body {
 .green {
   color: rgb(0, 195, 0);
 }
-
 @import "admin-styles/mixin";
-
+@import "home";
 @import "admin-styles/dashboard";
 @import "admin-styles/products";
 @import "admin-styles/chart";
