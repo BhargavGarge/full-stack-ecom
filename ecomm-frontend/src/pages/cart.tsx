@@ -21,22 +21,19 @@ const cartItems = [
   },
 ];
 const Cart = () => {
-  const [couponCode, setCouponCode] = useState("");
-  const [isValidCouponCode, setIsValidCouponCode] = useState(false);
+  const [couponCode, setCouponCode] = useState<string>("");
+  const [isValidCouponCode, setIsValidCouponCode] = useState<boolean>(false);
 
   useEffect(() => {
     const timeOutID = setTimeout(() => {
-      if (Math.random() > 0.5) {
-        setIsValidCouponCode(true);
-      } else {
-        setIsValidCouponCode(false);
-      }
+      if (Math.random() > 0.5) setIsValidCouponCode(true);
+      else setIsValidCouponCode(false);
     }, 1000);
     return () => {
       clearTimeout(timeOutID);
       setIsValidCouponCode(false);
     };
-  });
+  }, [couponCode]);
 
   return (
     <>
@@ -68,7 +65,7 @@ const Cart = () => {
           />
           {couponCode &&
             (isValidCouponCode ? (
-              <span className="green">
+              <span className="green" style={{ textTransform: "uppercase" }}>
                 {" "}
                 ₹{discount} off the using the <code>{couponCode}</code>
               </span>
