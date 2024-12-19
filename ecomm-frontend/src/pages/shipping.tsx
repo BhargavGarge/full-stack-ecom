@@ -53,14 +53,6 @@ const shipping = () => {
             value={shippingInfo.state}
             onChange={changeHandler}
           />{" "}
-          {/* <input
-            required
-            type="text"
-            placeholder="Country"
-            name="country"
-            value={shippingInfo.country}
-            onChange={changeHandler}
-          />{" "} */}
           <select
             name="country"
             required
