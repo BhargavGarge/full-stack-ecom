@@ -1,12 +1,13 @@
-import express, { Request, Response, NextFunction } from "express";
+import express from "express";
 import userRoute from "./routes/user.js";
-interface CustomError extends Error {
-  statusCode?: number;
-}
+import { errorMidleware } from "./middleware/error.js";
+import connectDB from "./utils/db.js";
+
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+connectDB();
 
 //using routes
 app.get("/", (req, res) => {
@@ -15,14 +16,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/user", userRoute);
 
 //error handling middleware
-app.use(
-  (err: CustomError, req: Request, res: Response, next: NextFunction): void => {
-    res.status(err.statusCode || 400).json({
-      error: err.message || "An error occurred",
-      success: false,
-    });
-  }
-);
+app.use(errorMidleware);
 
 app.listen(port, () => {
   console.log(`Express is running on port ${port}`);
