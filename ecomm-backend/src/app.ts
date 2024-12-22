@@ -1,5 +1,7 @@
 import express from "express";
 import userRoute from "./routes/user.js";
+import productRoute from "./routes/product.js";
+
 import { errorMidleware } from "./middleware/error.js";
 import connectDB from "./utils/db.js";
 import morgan from "morgan";
@@ -16,6 +18,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to E-commerce API");
 });
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/product", productRoute);
 
 //error handling middleware
 app.use(errorMidleware);
