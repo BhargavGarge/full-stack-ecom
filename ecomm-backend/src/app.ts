@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/product", productRoute);
+app.use("/uploads", express.static("uploads"));
 
 //error handling middleware
 app.use(errorMidleware);
