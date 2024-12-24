@@ -4,6 +4,7 @@ import {
   getAllCategories,
   getDeleteProduct,
   getlatestProducts,
+  getProducts,
   getSingleProduct,
   newProduct,
   updateProduct,
@@ -20,7 +21,8 @@ app.get("/admin-products", getAdminProducts);
 app
   .route("/:id")
   .get(getSingleProduct)
-  .put(singleUpload, updateProduct)
-  .delete(getDeleteProduct);
+  .put(adminOnly, singleUpload, updateProduct)
+  .delete(adminOnly, getDeleteProduct);
+app.get("/all", getProducts);
 
 export default app;
