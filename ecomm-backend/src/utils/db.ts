@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
-
+import { invalidateCacheProps } from "../types/types.js";
+import { myCache } from "../app.js";
+import { Product } from "../models/product.js";
 const mongoURI =
   "mongodb+srv://bhargaavvv:1234@cluster0.ixk63.mongodb.net/Ecomm?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -14,3 +16,22 @@ const connectDB = async () => {
 };
 
 export default connectDB;
+
+export const invalidateCache = async ({
+  product,
+  order,
+  admin,
+}: invalidateCacheProps) => {
+  if (product) {
+    const productKey: string[] = [
+      "latest-products",
+      "categories",
+      "all-products",
+    ];
+    const products = await Product.find({}).select("_id");
+    products.forEach((i) => {
+      const id = i._id;
+    });
+    myCache.del(productKey);
+  }
+};
