@@ -1,13 +1,12 @@
 import mongoose from "mongoose";
-import { invalidateCacheProps } from "../types/types.js";
+import { invalidateCacheProps, OrderItemType } from "../types/types.js";
 import { myCache } from "../app.js";
 import { Product } from "../models/product.js";
-const mongoURI =
-  "mongodb+srv://bhargaavvv:1234@cluster0.ixk63.mongodb.net/Ecomm?retryWrites=true&w=majority&appName=Cluster0";
+import { Order } from "../models/order.js";
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(mongoURI, {});
+    await mongoose.connect(process.env.MONGO_URI as string);
     console.log("MongoDB connected successfully");
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
@@ -21,6 +20,9 @@ export const invalidateCache = async ({
   product,
   order,
   admin,
+  userId,
+  orderId,
+  productId,
 }: invalidateCacheProps) => {
   if (product) {
     const productKey: string[] = [
@@ -28,10 +30,39 @@ export const invalidateCache = async ({
       "categories",
       "all-products",
     ];
-    const products = await Product.find({}).select("_id");
-    products.forEach((i) => {
-      const id = i._id;
-    });
+
+    if (typeof productId === "string") productKey.push(`product-${productId}`);
+
+    if (typeof productId === "object")
+      productId.forEach((i) => productKey.push(`product-${i}`));
+
     myCache.del(productKey);
+  }
+  if (order) {
+    const ordersKey: string[] = [
+      "all-orders",
+      `my-orders-${userId}`,
+      `order-${orderId}`,
+    ];
+
+    myCache.del(ordersKey);
+  }
+  if (admin) {
+    await myCache.del([
+      "admin-stats",
+      "admin-pie-charts",
+      "admin-bar-charts",
+      "admin-line-charts",
+    ]);
+  }
+};
+
+export const reduceStock = async (orderItems: OrderItemType[]) => {
+  for (let i = 0; i < orderItems.length; i++) {
+    const order = orderItems[i];
+    const product = await Product.findById(order.productId);
+    if (!product) throw new Error("Product Not Found");
+    product.stock -= order.quantity;
+    await product.save();
   }
 };
