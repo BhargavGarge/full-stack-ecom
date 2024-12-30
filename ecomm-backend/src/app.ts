@@ -9,14 +9,17 @@ import orderRoute from "./routes/order.js";
 import dotenv from "dotenv";
 import { errorMiddleware } from "./middleware/error.js";
 import paymentRoute from "./routes/payment.js";
+import Stripe from "stripe";
 const app = express();
 dotenv.config();
 const port = process.env.PORT || 3000;
+const stripeKey = process.env.STRIPE_KEY || "";
 
 app.use(express.json());
 app.use(morgan("dev"));
 
 connectDB();
+export const stripe = new Stripe(stripeKey);
 export const myCache = new NodeCache();
 
 //using routes
