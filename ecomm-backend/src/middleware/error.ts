@@ -1,10 +1,10 @@
-import { NextFunction, Request, Response } from "express";
-
 import { ControllerType } from "../types/types.js";
 import { ErrorHandler } from "../utils/utility-class.js";
+import { Request, Response, NextFunction } from "express";
 
+// Error handling middleware with the correct signature
 export const errorMiddleware = (
-  err: ErrorHandler,
+  err: ErrorHandler, // Custom Error type
   req: Request,
   res: Response,
   next: NextFunction

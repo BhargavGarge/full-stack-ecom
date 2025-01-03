@@ -1,4 +1,6 @@
-export const errorMiddleware = (err, req, res, next) => {
+// Error handling middleware with the correct signature
+export const errorMiddleware = (err, // Custom Error type
+req, res, next) => {
     err.message || (err.message = "Internal Server Error");
     err.statusCode || (err.statusCode = 500);
     if (err.name === "CastError")

@@ -14,15 +14,15 @@ import { adminOnly } from "../middleware/auth.js";
 
 const app = express.Router();
 
-app.post("/new", adminOnly, singleUpload, newProduct);
-app.get("/latest", getlatestProducts);
-app.get("/categories", getAllCategories);
-app.get("/admin-products", getAdminProducts);
+app.post("/new", adminOnly as any, singleUpload, newProduct as any);
+app.get("/latest", getlatestProducts as any);
+app.get("/categories", getAllCategories as any);
+app.get("/admin-products", getAdminProducts as any);
 app
   .route("/:id")
-  .get(getSingleProduct)
-  .put(adminOnly, singleUpload, updateProduct)
-  .delete(adminOnly, getDeleteProduct);
-app.get("/all", getProducts);
+  .get(getSingleProduct as any)
+  .put(adminOnly as any, singleUpload, updateProduct as any)
+  .delete(adminOnly as any, getDeleteProduct as any);
+app.get("/all", getProducts as any);
 
 export default app;
